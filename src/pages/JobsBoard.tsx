@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { JobCreateDialog } from "@/components/JobCreateDialog";
 import { Plus, Search, Filter, Archive, MoreHorizontal, Edit, Trash, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +27,7 @@ export default function JobsBoard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [createJobOpen, setCreateJobOpen] = useState(false);
   const { toast } = useToast();
 
   // Get all unique tags
@@ -72,6 +74,10 @@ export default function JobsBoard() {
     });
   };
 
+  const handleJobCreated = (newJob: Job) => {
+    setJobs(prev => [newJob, ...prev]);
+  };
+
   const getStatusBadgeVariant = (status: Job['status']) => {
     switch (status) {
       case 'active': return 'default';
@@ -99,7 +105,10 @@ export default function JobsBoard() {
           <h1 className="text-3xl font-display font-bold">Jobs Board</h1>
           <p className="text-muted-foreground mt-1">Manage your job postings and track applications</p>
         </div>
-        <Button className="bg-gradient-primary hover:opacity-90 shadow-glow">
+        <Button 
+          className="bg-gradient-primary hover:opacity-90 shadow-glow"
+          onClick={() => setCreateJobOpen(true)}
+        >
           <Plus className="w-4 h-4 mr-2" />
           Create Job
         </Button>
@@ -289,6 +298,12 @@ export default function JobsBoard() {
           <p className="text-muted-foreground">Try adjusting your search or filter criteria</p>
         </div>
       )}
+
+      <JobCreateDialog 
+        open={createJobOpen}
+        onOpenChange={setCreateJobOpen}
+        onJobCreated={handleJobCreated}
+      />
     </div>
   );
 }

@@ -116,10 +116,7 @@ export default function CandidatesList() {
             </SelectContent>
           </Select>
 
-          <Button variant="outline" className="bg-muted/30">
-            <Filter className="w-4 h-4 mr-2" />
-            More Filters
-          </Button>
+          {/* More Filters removed as requested */}
         </div>
       </div>
 
